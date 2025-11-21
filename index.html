@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bear Lane</title>
+    <link rel="shortcut icon" href="logo.png" type="image/x-icon">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fff;
+            color: #e0e0e0;
+        }
+
+        footer {
+            background: #45281e;
+            color: #ffffff;
+            padding: 30px 20px;
+            text-align: center;
+            border-top: 1px solid #222;
+            margin-top: 40px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        footer a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s ease;
+        }
+
+        footer a:hover {
+            color: #fff;
+            text-shadow: 0px 0px 5px #fff;
+        }
+
+        #footer-contact {
+            margin-bottom: 8px;
+        }
+
+        footer p {
+            margin: 5px 0;
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        footer .copyright {
+            font-size: 13px;
+            opacity: 0.6;
+            margin-top: 10px;
+        }
+
+        nav {
+            width: 100%;
+            background: #fff;
+            border-bottom: 1px solid #45281e;
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo img {
+            max-width: 220px;
+            filter: brightness(0.9);
+        }
+
+        .search-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .search-group h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #45281e;
+        }
+
+        #searchInput {
+            height: 36px;
+            padding: 6px 12px;
+            background: #45281e;
+            border: 1px solid #444;
+            border-radius: 4px;
+            width: 240px;
+            outline: none;
+            color: #e0e0e0;
+            font-size: 14px;
+        }
+
+        #searchInput:focus {
+            border-color: #45281e;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
+
+        #searchInput::placeholder {
+            color: #888;
+        }
+
+        /* PRODUCT GRID */
+        #productsContainer {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            background: #45281e;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #45281e;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            border-color: #45281e;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #e0e0e0;
+        }
+
+        .card p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        .card button {
+            margin-top: 15px;
+            padding: 10px;
+            background: white;
+            color: #45281e;
+            border: none;
+            width: 100%;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .card button:hover {
+            background: #45281e;
+            color: white;
+        }
+
+        /* POPUP */
+        #buyBox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #buyInside {
+            background: #45281e;
+            padding: 25px;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 10px;
+            border: 1px solid #45281e;
+            color: #e0e0e0;
+            font-family: monospace;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        #buyTitle {
+            color: #45281e;
+            margin-top: 0;
+        }
+
+        #buyDetails {
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        #buyerEmail {
+            width: 100%;
+            padding: 10px;
+            background: #45281e;
+            border: 1px solid #444;
+            color: #e0e0e0;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+
+        #sendBtn {
+            width: 100%;
+            padding: 12px;
+            background: white;
+            color: #45281e;
+            border: none;
+            border-radius: 6px;
+            margin-top: 15px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        #sendBtn:hover {
+            background: white;
+        }
+
+        .category {
+            cursor: pointer;
+            padding: 8px 0;
+            display: block;
+            transition: color 0.2s;
+        }
+
+        .category:hover {
+            color: #45281e;
+        }
+
+        .nav-left {
+            background: #45281e;
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid #333;
+            height: fit-content;
+        }
+
+        .category-header {
+            background: #45281e;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .category-list h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .content-area {
+            flex: 1;
+        }
+
+        .results-info {
+            padding: 10px 20px;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+            font-style: italic;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .search-group {
+                width: 100%;
+            }
+
+            #searchInput {
+                width: 100%;
+            }
+
+            .main-container {
+                flex-direction: column;
+            }
+
+            .nav-left {
+                width: 100%;
+            }
+
+            #productsContainer {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            #productsContainer {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hero {
+            background-color: #45281e;
+            padding: 60px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 20px;
+            margin: 20px 250px;
+            gap: 40px;
+        }
+
+        .hero .left {
+            max-width: 50%;
+            color: #f7e9d7;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 18px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .hero .right img {
+            width: 350px;
+            height: auto;
+            filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.4));
+        }
+
+        /* -------- TABLET -------- */
+        @media (max-width: 1200px) {
+            .hero {
+                margin: 20px 80px;
+                padding: 50px 40px;
+            }
+
+            .hero .right img {
+                width: 300px;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+        }
+
+        /* -------- SMALL TABLET -------- */
+        @media (max-width: 900px) {
+            .hero {
+                margin: 20px 40px;
+                padding: 45px 35px;
+                gap: 30px;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .hero .right img {
+                width: 260px;
+            }
+        }
+
+        /* -------- MOBILE -------- */
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                margin: 20px;
+                padding: 40px 25px;
+            }
+
+            .hero .left {
+                max-width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 15px;
+            }
+
+            .hero .right img {
+                width: 240px;
+            }
+        }
+
+        /* -------- SMALL MOBILE -------- */
+        @media (max-width: 480px) {
+            .hero {
+                padding: 30px 20px;
+                gap: 20px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .hero .right img {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="logo">
+            <img src="logo.png">
+            <div class="search-group">
+                <h2>Search</h2>
+                <input type="text" id="searchInput" placeholder="Search products...">
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <div class="left">
+            <h1>Trust Us — We Provide What You Need</h1>
+            <p>We deliver secure, high-quality products with precision and expertise. Your needs are our responsibility.
+            </p>
+        </div>
+        <div class="right">
+            <img src="https://www.freepnglogos.com/uploads/bear-png/bear-png-image-purepng-transparent-png-image-8.png"
+                alt="">
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- LEFT CATEGORY NAV -->
+        <div class="nav-left">
+            <div class="category-header">Shop by category</div>
+            <div class="category-list">
+                <h3><span class="category" data-cat="All" style="color:white">All Products</span></h3>
+                <h3><span class="category" data-cat="Data" style="color:white;">Data</span></h3>
+                <h3><span class="category" data-cat="Apparel" style="color:white;">Apparel</span></h3>
+                <h3><span class="category" data-cat="Art" style="color:white;">Art</span></h3>
+                <h3><span class="category" data-cat="Books" style="color:white;">Books</span></h3>
+                <h3><span class="category" data-cat="Computer equipment" style="color:white;">Computer
+                        equipment</span>
+                </h3>
+                <h3><span class="category" data-cat="Digital goods" style="color:white;">Digital goods</span></h3>
+                <h3><span class="category" data-cat="Biotic materials" style="color:white;">Biotic materials</span>
+                </h3>
+            </div>
+        </div>
+
+        <!-- PRODUCT GRID -->
+        <div class="content-area">
+            <div class="results-info" id="resultsInfo">Showing all products</div>
+            <div id="productsContainer"></div>
+        </div>
+    </div>
+
+    <!-- BUY POPUP -->
+    <div id="buyBox">
+        <div id="buyInside">
+            <h3 id="buyTitle">Buy Item</h3>
+            <p id="buyDetails"></p>
+
+            <input id="buyerEmail" type="email" placeholder="Enter your email">
+
+            <button id="sendBtn">Send Request</button>
+        </div>
+    </div>
+
+    <script>
+        // PRODUCTS DATA
+        const products = [
+            { name: "Encrypted USB Drive", price: "₿0.015", category: "Computer equipment" },
+            { name: "Privacy VPN Subscription", price: "₿0.025", category: "Digital goods" },
+            { name: "Bitcoin Sticker Pack", price: "₿0.005", category: "Art" },
+            { name: "Cyberpunk Hoodie", price: "₿0.020", category: "Apparel" },
+            { name: "Hacking Handbook", price: "₿0.030", category: "Books" },
+            { name: "Tor-enabled Smartphone", price: "₿0.150", category: "Computer equipment" },
+            { name: "Digital Art NFT", price: "₿0.050", category: "Art" },
+            { name: "Anonymous Email Setup Guide", price: "₿0.010", category: "Books" },
+            { name: "Blockchain Sticker Pack", price: "₿0.005", category: "Art" },
+            { name: "Stealth Hoodie", price: "₿0.022", category: "Apparel" },
+            { name: "Encrypted Hard Drive 1TB", price: "₿0.080", category: "Computer equipment" },
+            { name: "Digital Music Pack", price: "₿0.015", category: "Digital goods" },
+            { name: "Cyber Art Print", price: "₿0.018", category: "Art" },
+            { name: "Tor Browser Guide", price: "₿0.008", category: "Books" },
+            { name: "Smart Gloves", price: "₿0.025", category: "Apparel" },
+            { name: "Raspberry Pi Kit", price: "₿0.045", category: "Computer equipment" },
+            { name: "E-Book: Privacy Essentials", price: "₿0.012", category: "Books" },
+            { name: "Digital Poster Pack", price: "₿0.010", category: "Art" },
+            { name: "VPN Lifetime Subscription", price: "₿0.035", category: "Digital goods" },
+            { name: "Minimalist Hoodie", price: "₿0.020", category: "Apparel" },
+            { name: "Encrypted Flash Drive 64GB", price: "₿0.020", category: "Computer equipment" },
+            { name: "Digital Sticker Pack", price: "₿0.005", category: "Digital goods" },
+            { name: "Cyberpunk Poster", price: "₿0.015", category: "Art" },
+            { name: "Guide to Secure Messaging", price: "₿0.010", category: "Books" },
+            { name: "Tech T-Shirt", price: "₿0.018", category: "Apparel" },
+            { name: "Gaming Keyboard", price: "₿0.050", category: "Computer equipment" },
+            { name: "Digital Art Wallpaper", price: "₿0.007", category: "Digital goods" },
+            { name: "Crypto Art Print", price: "₿0.025", category: "Art" },
+            { name: "E-Book: Bitcoin Basics", price: "₿0.008", category: "Books" },
+            { name: "Hooded Jacket", price: "₿0.030", category: "Apparel" },
+            { name: "Portable SSD 512GB", price: "₿0.060", category: "Computer equipment" },
+            { name: "Online Course: Privacy 101", price: "₿0.020", category: "Digital goods" },
+            { name: "Pixel Art Pack", price: "₿0.012", category: "Art" },
+            { name: "E-Book: Digital Security", price: "₿0.010", category: "Books" },
+            { name: "Cyber Hoodie", price: "₿0.022", category: "Apparel" },
+            { name: "Mini Server Kit", price: "₿0.070", category: "Computer equipment" },
+            { name: "Digital Comic Pack", price: "₿0.015", category: "Digital goods" },
+            { name: "Tech Poster", price: "₿0.008", category: "Art" },
+            { name: "Guide: Anonymous Surfing", price: "₿0.010", category: "Books" },
+            { name: "Smart Beanie", price: "₿0.018", category: "Apparel" },
+            { name: "Encrypted NAS Drive", price: "₿0.090", category: "Computer equipment" },
+            { name: "Digital Sound Pack", price: "₿0.012", category: "Digital goods" },
+            { name: "Crypto Poster Set", price: "₿0.020", category: "Art" },
+            { name: "E-Book: Cybersecurity Tips", price: "₿0.010", category: "Books" },
+            { name: "Minimal Hoodie", price: "₿0.019", category: "Apparel" },
+            { name: "Arduino Starter Kit", price: "₿0.035", category: "Computer equipment" },
+            { name: "Digital Icon Pack", price: "₿0.008", category: "Digital goods" },
+            { name: "Cyberpunk Wall Art", price: "₿0.025", category: "Art" },
+            { name: "Guide: Bitcoin Wallets", price: "₿0.012", category: "Books" },
+            { name: "Tech Hoodie", price: "₿0.021", category: "Apparel" },
+            { name: "Encrypted Laptop Bag", price: "₿0.040", category: "Computer equipment" },
+            { name: "Digital Brush Pack", price: "₿0.010", category: "Digital goods" },
+            { name: "Retro Poster Pack", price: "₿0.015", category: "Art" },
+            { name: "E-Book: Online Privacy", price: "₿0.008", category: "Books" }
+        ];
+
+        // DOM Elements
+        const container = document.getElementById("productsContainer");
+        const searchInput = document.getElementById("searchInput");
+        const resultsInfo = document.getElementById("resultsInfo");
+        const buyBox = document.getElementById("buyBox");
+        const buyDetails = document.getElementById("buyDetails");
+
+        // State variables
+        let selectedProduct = null;
+        let currentFilter = "All";
+        let currentSearchTerm = "";
+
+        // RENDER PRODUCTS
+        function renderProducts(list) {
+            container.innerHTML = "";
+
+            if (list.length === 0) {
+                container.innerHTML = '<div class="no-results">No products found matching your criteria.</div>';
+                return;
+            }
+
+            list.forEach((p, index) => {
+                container.innerHTML += `
+                <div class="card">
+                    <h3>${p.name}</h3>
+                    <h3 style="color:white">${p.price}</h3>
+                    <p>Category: ${p.category}</p>
+                    <button onclick="openBuy(${index})">Buy</button>
+                </div>`;
+            });
+        }
+
+        // UPDATE RESULTS INFO
+        function updateResultsInfo(count, filter, searchTerm) {
+            let info = "";
+
+            if (searchTerm && filter !== "All") {
+                info = `Showing ${count} products in "${filter}" matching "${searchTerm}"`;
+            } else if (searchTerm) {
+                info = `Showing ${count} products matching "${searchTerm}"`;
+            } else if (filter !== "All") {
+                info = `Showing ${count} products in "${filter}"`;
+            } else {
+                info = `Showing all ${count} products`;
+            }
+
+            resultsInfo.textContent = info;
+        }
+
+        // SEARCH FUNCTIONALITY
+        function performSearch() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            currentSearchTerm = searchTerm;
+
+            let filteredProducts = products;
+
+            // Apply category filter
+            if (currentFilter !== "All") {
+                filteredProducts = filteredProducts.filter(p => p.category === currentFilter);
+            }
+
+            // Apply search term filter
+            if (searchTerm) {
+                filteredProducts = filteredProducts.filter(p =>
+                    p.name.toLowerCase().includes(searchTerm) ||
+                    p.category.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            renderProducts(filteredProducts);
+            updateResultsInfo(filteredProducts.length, currentFilter, searchTerm);
+        }
+
+        // CATEGORY FILTER
+        document.querySelectorAll(".category").forEach(cat => {
+            cat.onclick = () => {
+                currentFilter = cat.dataset.cat;
+
+                // Update active category styling
+                document.querySelectorAll(".category").forEach(c => {
+                    c.style.fontWeight = "normal";
+                });
+                cat.style.fontWeight = "bold";
+
+                performSearch();
+            };
+        });
+
+        // SEARCH INPUT EVENT LISTENER
+        searchInput.addEventListener("input", performSearch);
+
+        // BUY POPUP
+        function openBuy(index) {
+            // Get the current filtered list
+            let filteredProducts = products;
+
+            if (currentFilter !== "All") {
+                filteredProducts = filteredProducts.filter(p => p.category === currentFilter);
+            }
+
+            if (currentSearchTerm) {
+                filteredProducts = filteredProducts.filter(p =>
+                    p.name.toLowerCase().includes(currentSearchTerm) ||
+                    p.category.toLowerCase().includes(currentSearchTerm)
+                );
+            }
+
+            selectedProduct = filteredProducts[index];
+            buyDetails.innerHTML = `
+                <b>Product:</b> ${selectedProduct.name}<br>
+                <b>Price:</b> ${selectedProduct.price}<br>
+                <b>Category:</b> ${selectedProduct.category}
+            `;
+            buyBox.style.display = "flex";
+        }
+
+        // CLOSE POPUP WHEN CLICKING OUTSIDE
+        buyBox.addEventListener("click", (e) => {
+            if (e.target === buyBox) {
+                buyBox.style.display = "none";
+            }
+        });
+
+        // SEND FORM
+        document.getElementById("sendBtn").onclick = async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById("buyerEmail").value;
+            if (!email) return alert("Please enter your email");
+
+            if (!selectedProduct) return alert("No product selected");
+
+            const formData = new FormData();
+
+            // Web3Forms Key
+            formData.append("access_key", "b74b09fb-b5cc-4fe7-bb19-f31adf346c52");
+
+            // YOUR onionmail inbox (order will come here)
+            formData.append("to_email", "mirokovac@onionmail.org");
+
+            // Buyer Email
+            formData.append("Buyer Email", email);
+
+            // Product Details
+            formData.append("Product Name", selectedProduct.name);
+            formData.append("Price", selectedProduct.price);
+            formData.append("Category", selectedProduct.category);
+
+            try {
+                const res = await fetch("https://api.web3forms.com/submit", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    alert("Order sent successfully! We reply as mirokovac@onionmail.org");
+                    buyBox.style.display = "none";
+                    document.getElementById("buyerEmail").value = "";
+                } else {
+                    alert("Failed: " + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Error sending form");
+            }
+        };
+
+        // INITIAL RENDER
+        renderProducts(products);
+        updateResultsInfo(products.length, "All", "");
+    </script>
+
+    <footer>
+
+        <div id="footer-contact">
+            <p>
+                Contact: <a href="mailto:mirokovac@onionmail.org">
+                    mirokovac@onionmail.org
+                </a>
+            </p>
+        </div>
+
+        <p">
+            © 2025 All Rights Reserved
+        </p>
+
+    </footer>
+
+</body>
+
+</html>
